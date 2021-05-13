@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Ride = require('../models/ride-model');
-const fileUpload = require('../configs/cloudinary');
+const User = require('../models/user-model');
 
 // Get all rides 
 router.get('/rides', async (req, res) => {
@@ -85,15 +85,39 @@ router.put('/rides/:id', async (req, res) => {
   }
 });
 
+// User profile (get by ID)
+router.get('/users/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.status(200).json(user);
+  } catch (e) {
+    res.status(500).json(`error occurred ${e}`);
+  }
+});
 
-//Upload Images to Cloudinary
-// router.post('/upload', fileUpload.single('file'), (req,res) => {
-//   try{
-//     res.status(200).json({ fileUrl: req.file.path });
-//   } catch(e){
-//     res.status(500).json(`error occurred ${e}`);
-//   }
-// });
 
+// Update User
+
+router.put('/users/:id', async (req, res) => {
+  const {
+    username ,
+    email,
+    password,
+    imageUrl,
+    bio
+  } = req.body;
+  try {
+    await User.findByIdAndUpdate(req.params.id, {
+      username ,
+      email,
+      password,
+      imageUrl,
+      bio
+    });
+    res.status(200).json(`user with ID:${req.params.id} updated`);
+  } catch (e) {
+    res.status(500).json(`error occurred ${e}`);
+  }
+});
 
 module.exports = router;

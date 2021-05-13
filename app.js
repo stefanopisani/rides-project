@@ -56,7 +56,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // default value for title local
-app.locals.title = 'Express - Generated with IronGenerator';
+app.locals.title = 'Rides';
 
 app.use(
   cors({
@@ -73,6 +73,5 @@ app.use('/api', rides);
 
 const auth = require('./routes/auth-routes');
 app.use('/api', auth);
-
 
 module.exports = app;

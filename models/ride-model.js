@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 const rideSchema = new Schema ({
     departure: String,
     arrival: String,
-    date: Date,
-    time: TimeRanges,
+    date: String,
+    time: String,
     description: String,
     user: 
     {
@@ -13,7 +13,11 @@ const rideSchema = new Schema ({
       ref: 'User' 
     },
     reviews: [{
-      user: String,  //current user ?
+      user:
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User' // relates to the Author model
+      },  
       comment: String
     }] 
   },

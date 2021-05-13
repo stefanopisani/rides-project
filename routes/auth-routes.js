@@ -6,9 +6,10 @@ const passport = require('passport');
 const fileUpload = require('../configs/cloudinary');
 
 //*******SIGNUP***********
-router.post("/signup", fileUpload.single('file'), async (req, res) => {
-  const fileOnCloudinary = req.file.path;
-  const { username, email, password, bio } = req.body;
+
+router.post("/signup", async (req, res) => {   
+ // const fileOnCloudinary = req.file.path;
+  const { username, email, password, imageUrl, bio } = req.body;
   //Checking for username and password being filled out
   if (username === "" || password === "") {
     res.status(500).json("Indicate username and password");
@@ -42,8 +43,8 @@ router.post("/signup", fileUpload.single('file'), async (req, res) => {
       username,
       email,
       password: hashedPassword,
-      bio,
-      imageUrl: fileOnCloudinary
+      imageUrl,
+      bio
     });
     res.json(user)
   } catch (e) {
@@ -92,6 +93,16 @@ router.get('/loggedin', (req,res)=> {
     return;
   }
   res.status(200).json({})
+});
+
+
+//Upload Images to Cloudinary
+router.post('/upload', fileUpload.single('file'), (req,res) => {
+  try{
+    res.status(200).json({ fileUrl: req.file.path });
+  } catch(e){
+    res.status(500).json(`error occurred ${e}`);
+  }
 });
 
 module.exports = router;
