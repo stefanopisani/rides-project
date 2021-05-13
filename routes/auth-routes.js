@@ -53,6 +53,29 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+
+// Update User
+
+router.put('/users/:id', async (req, res) => {
+  const {
+    username ,
+    email,
+    imageUrl,
+    bio
+  } = req.body;
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, {
+      username,
+      email,
+      imageUrl,
+      bio
+    }, {new: true});
+    res.status(200).json(user);
+  } catch (e) {
+    res.status(500).json(`error occurred ${e}`);
+  }
+});
+
 //*********LOGIN************
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, theUser, failureDetails) => {
@@ -104,5 +127,25 @@ router.post('/upload', fileUpload.single('file'), (req,res) => {
     res.status(500).json(`error occurred ${e}`);
   }
 });
+
+//Route that will be called from our front-end
+//For google authentication
+router.get("/auth/google",
+  passport.authenticate("google", {
+    scope: [
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/userinfo.email"
+    ]
+  })
+);
+//Route that will be called from the google servers
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: `${process.env.CLIENT_HOSTNAME}/rides`,
+    failureRedirect: `${process.env.CLIENT_HOSTNAME}/login`
+  })
+);
+
 
 module.exports = router;

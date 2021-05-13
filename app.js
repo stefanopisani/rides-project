@@ -7,6 +7,7 @@ const mongoose     = require('mongoose');
 const logger       = require('morgan');
 const path         = require('path');
 const session      = require('express-session');
+const MongoStore = require('connect-mongodb-session')(session);
 const passport     = require('passport');
 const cors         = require('cors');
 
@@ -47,8 +48,19 @@ app.use(session({
     httpOnly: true, // not using https
     maxAge: 600000 // expiration time in ms --> 1 hour
   },
-  rolling: true // session gets refreshed with interactions
+  rolling: true, // session gets refreshed with interactions
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection,
+    uri: process.env.MONGODB_URI ,
+    collection:'mySessions',
+    ttl: 86400 // mins = 24hrs
+  })
 }))
+
+// const store = new MongoStore({
+//   uri: process.env.MONGODB_URI ,
+//   collection:'mySessions'
+// })
 
 //Initialize passport
 app.use(passport.initialize());

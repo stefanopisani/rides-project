@@ -22,6 +22,7 @@ router.post('/rides', async (req, res) => {
     time,
     description
   } = req.body
+  // const user = req.session.currentUser
   if (!departure || !arrival || !date || !time) {
     res.status(400).json('missing fields');
     return
@@ -32,7 +33,8 @@ router.post('/rides', async (req, res) => {
       arrival,
       date,
       time,
-      description
+      description,
+      user : req.session.currentUser
     });
     res.status(200).json(response);
   } catch (e) {
@@ -96,28 +98,5 @@ router.get('/users/:id', async (req, res) => {
 });
 
 
-// Update User
-
-router.put('/users/:id', async (req, res) => {
-  const {
-    username ,
-    email,
-    password,
-    imageUrl,
-    bio
-  } = req.body;
-  try {
-    await User.findByIdAndUpdate(req.params.id, {
-      username ,
-      email,
-      password,
-      imageUrl,
-      bio
-    });
-    res.status(200).json(`user with ID:${req.params.id} updated`);
-  } catch (e) {
-    res.status(500).json(`error occurred ${e}`);
-  }
-});
 
 module.exports = router;
