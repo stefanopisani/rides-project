@@ -9,7 +9,7 @@ const fileUpload = require('../configs/cloudinary');
 
 router.post("/signup", async (req, res) => {   
  // const fileOnCloudinary = req.file.path;
-  const { username, email, password, imageUrl, bio } = req.body;
+  const { username, email, password, imageUrl, bio, phoneNumber } = req.body;
   //Checking for username and password being filled out
   if (username === "" || password === "") {
     res.status(500).json("Indicate username and password");
@@ -44,7 +44,8 @@ router.post("/signup", async (req, res) => {
       email,
       password: hashedPassword,
       imageUrl,
-      bio
+      bio,
+      phoneNumber
     });
     res.json(user)
   } catch (e) {
@@ -53,6 +54,15 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+// User profile (get by ID)
+router.get('/users/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.status(200).json(user);
+  } catch (e) {
+    res.status(500).json(`error occurred ${e}`);
+  }
+});
 
 // Update User
 
@@ -61,14 +71,16 @@ router.put('/users/:id', async (req, res) => {
     username ,
     email,
     imageUrl,
-    bio
+    bio,
+    phoneNumber
   } = req.body;
   try {
     const user = await User.findByIdAndUpdate(req.params.id, {
       username,
       email,
       imageUrl,
-      bio
+      bio,
+      phoneNumber
     }, {new: true});
     res.status(200).json(user);
   } catch (e) {
@@ -146,6 +158,32 @@ router.get(
     failureRedirect: `${process.env.CLIENT_HOSTNAME}/login`
   })
 );
+
+
+//Leave a review
+
+router.put('/reviews/:userId/add', async (req, res) => {
+  const userId = req.params.userId
+  const {
+    user,
+    comment,
+    rating
+  } = req.body
+  try {
+    const response = await User.findByIdAndUpdate( userId, {
+      $push: {
+        reviews: {
+          user,
+          comment,
+          rating
+        }
+      }
+    });
+    res.status(200).json(response);
+  } catch (e) {
+    res.status(500).json(`error occurred ${e}`);
+  }
+});
 
 
 module.exports = router;

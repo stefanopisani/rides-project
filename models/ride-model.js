@@ -7,19 +7,7 @@ const rideSchema = new Schema ({
     date: String,
     time: String,
     description: String,
-    user: 
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'User' 
-    },
-    reviews: [{
-      user:
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'User' // relates to the Author model
-      },  
-      comment: String
-    }] 
+    user: String,
   },
   {
     timestamps: true

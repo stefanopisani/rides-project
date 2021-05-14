@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Ride = require('../models/ride-model');
 const User = require('../models/user-model');
+const axios = require('axios');
 
 // Get all rides 
 router.get('/rides', async (req, res) => {
@@ -20,9 +21,10 @@ router.post('/rides', async (req, res) => {
     arrival,
     date,
     time,
-    description
+    description,
+    user
   } = req.body
-  // const user = req.session.currentUser
+  
   if (!departure || !arrival || !date || !time) {
     res.status(400).json('missing fields');
     return
@@ -34,7 +36,7 @@ router.post('/rides', async (req, res) => {
       date,
       time,
       description,
-      user : req.session.currentUser
+      user 
     });
     res.status(200).json(response);
   } catch (e) {
@@ -63,7 +65,7 @@ router.get('/rides/:id', async (req, res) => {
   }
 });
 
-//Update Project
+//Update Ride
 
 router.put('/rides/:id', async (req, res) => {
   const {
@@ -87,15 +89,9 @@ router.put('/rides/:id', async (req, res) => {
   }
 });
 
-// User profile (get by ID)
-router.get('/users/:id', async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    res.status(200).json(user);
-  } catch (e) {
-    res.status(500).json(`error occurred ${e}`);
-  }
-});
+// get weather
+
+
 
 
 

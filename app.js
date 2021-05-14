@@ -57,11 +57,6 @@ app.use(session({
   })
 }))
 
-// const store = new MongoStore({
-//   uri: process.env.MONGODB_URI ,
-//   collection:'mySessions'
-// })
-
 //Initialize passport
 app.use(passport.initialize());
 //Connect passport to the session

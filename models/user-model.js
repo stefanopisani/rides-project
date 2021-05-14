@@ -19,7 +19,16 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  googleId: String
+  // googleId: String,
+  phoneNumber: {
+    type: Number,
+    required:true
+  },
+  reviews: [{
+    user: String,  
+    comment: String,
+    rating: Number
+  }] 
 });
 
 const User = mongoose.model("User", userSchema);
