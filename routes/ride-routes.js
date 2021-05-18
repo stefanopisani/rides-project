@@ -7,7 +7,11 @@ const axios = require('axios');
 // Get all rides 
 router.get('/rides', async (req, res) => {
   try {
-    const allrides = await Ride.find();
+    const allrides = await Ride.find(null, null, {
+    sort: {
+      date: 1
+    }
+  }).populate("user");
     res.status(200).json(allrides);
   } catch (e) {
     res.status(500).json(`error occurred ${e}`);
@@ -16,13 +20,13 @@ router.get('/rides', async (req, res) => {
 
 // Create Ride
 router.post('/rides', async (req, res) => {
+  const loggedUser = req.user;
   const {
     departure,
     arrival,
     date,
     time,
-    description,
-    user
+    description
   } = req.body
   
   if (!departure || !arrival || !date || !time) {
@@ -36,7 +40,7 @@ router.post('/rides', async (req, res) => {
       date,
       time,
       description,
-      user 
+      user: loggedUser
     });
     res.status(200).json(response);
   } catch (e) {
@@ -58,7 +62,7 @@ router.delete('/rides/:id', async (req, res) => {
 // Get by ID
 router.get('/rides/:id', async (req, res) => {
   try {
-    const ride = await Ride.findById(req.params.id);
+    const ride = await Ride.findById(req.params.id).populate('user');
     res.status(200).json(ride);
   } catch (e) {
     res.status(500).json(`error occurred ${e}`);

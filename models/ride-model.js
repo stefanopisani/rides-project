@@ -7,7 +7,10 @@ const rideSchema = new Schema ({
     date: String,
     time: String,
     description: String,
-    user: String,
+    user: {
+       type: Schema.Types.ObjectId,
+       ref: 'User' 
+    }
   },
   {
     timestamps: true
