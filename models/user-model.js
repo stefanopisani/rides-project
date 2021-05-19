@@ -28,7 +28,11 @@ const userSchema = new Schema({
     user: String,  
     comment: String,
     rating: Number
-  }] 
+  }],
+//   rides: {
+//     type: Schema.Types.ObjectId,
+//     ref: 'Ride' 
+//  } 
 });
 
 const User = mongoose.model("User", userSchema);

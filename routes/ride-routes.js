@@ -7,11 +7,26 @@ const axios = require('axios');
 // Get all rides 
 router.get('/rides', async (req, res) => {
   try {
-    const allrides = await Ride.find(null, null, {
+    const today = new Date().toISOString().split("T")[0]; 
+    const allrides = await Ride.find({date:{ $gt: today}}, null, {
     sort: {
       date: 1
     }
   }).populate("user");
+    res.status(200).json(allrides);
+  } catch (e) {
+    res.status(500).json(`error occurred ${e}`);
+  }
+});
+// Get all rides 
+router.get('/rides/user/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId
+    const allrides = await Ride.find({user: userId}, null, {
+    sort: {
+      date: 1
+    }
+  })
     res.status(200).json(allrides);
   } catch (e) {
     res.status(500).json(`error occurred ${e}`);
