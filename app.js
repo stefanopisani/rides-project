@@ -43,7 +43,7 @@ app.use(session({
   saveUninitialized: true,
   resave: false,
   cookie:{
-    sameSite: none, //true // the client is on the same domain as the server
+    sameSite: "none", //true // the client is on the same domain as the server
     secure:  true, //false, // not using https
     httpOnly: false, //true, // not using https
     maxAge: 600000 // expiration time in ms --> 1 hour
