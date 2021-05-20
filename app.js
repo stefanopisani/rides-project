@@ -43,18 +43,18 @@ app.use(session({
   saveUninitialized: true,
   resave: false,
   cookie:{
-    sameSite: true, // the client is on the same domain as the server
-    secure: false, // not using https
-    httpOnly: true, // not using https
+    sameSite: none, //true // the client is on the same domain as the server
+    secure:  true, //false, // not using https
+    httpOnly: false, //true, // not using https
     maxAge: 600000 // expiration time in ms --> 1 hour
   },
-  rolling: true, // session gets refreshed with interactions
-  store: new MongoStore({
-    mongooseConnection: mongoose.connection,
-    uri: process.env.MONGODB_URI ,
-    collection:'mySessions',
-    ttl: 86400 // mins = 24hrs
-  })
+  rolling: true // session gets refreshed with interactions
+  // store: new MongoStore({
+  //   mongooseConnection: mongoose.connection,
+  //   uri: process.env.MONGODB_URI ,
+  //   collection:'mySessions',
+  //   ttl: 86400 // mins = 24hrs
+  // })
 }))
 
 //Initialize passport
