@@ -11,7 +11,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: 'projects',
+    folder: 'rides',
     allowedFormats: ['jpg', 'png'],
   },
   filename: function(req, file, cb) {

@@ -68,7 +68,7 @@ app.locals.title = 'Rides';
 app.use(
   cors({
     credentials:true,
-    origin: [process.env.CLIENT_HOSTNAME]
+    origin: [process.env.CLIENT_HOSTNAME, "https://rides-io.com"]
 })
 );
 
